@@ -5,4 +5,47 @@ format: html
 editor: visual
 ---
 
+```{r}
+#| eval: false
+
+# Load necessary library
+library(magick)
+
+# Define the target RGB values and the tolerance
+target_rgb <- c(r = 0.651, g = 0.701, b = 0.29)
+tolerance <- 0.05
+
+# Define the function to check if a color is close to the target
+is_close <- function(color) {
+  all(abs(color - target_rgb) <= tolerance)
+}
+
+# Load the image
+image_path <- "path/to/your/image.jpg"  # Replace with your image path
+image <- image_read(image_path)
+
+# Convert the image to a pixel matrix
+image_matrix <- as.integer(image_data(image))
+
+# Initialize a mask for the pixels that are close to the target color
+mask <- matrix(FALSE, nrow = dim(image_matrix)[1], ncol = dim(image_matrix)[2])
+
+# Iterate over each pixel and check if it's close to the target RGB
+for (i in 1:dim(image_matrix)[1]) {
+  for (j in 1:dim(image_matrix)[2]) {
+    pixel_rgb <- image_matrix[i, j, 1:3] / 255  # Normalize to [0, 1]
+    if (is_close(pixel_rgb)) {
+      mask[i, j] <- TRUE
+    }
+  }
+}
+
+# Create a new image based on the mask
+output_image <- image
+output_image[!mask] <- "white"  # Set non-matching pixels to white (or any other color)
+
+# Save or display the output image
+image_write(output_image, "output_image.jpg")  # Save the output
+print(output_image)  # Display the output image
+```
 
