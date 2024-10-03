@@ -5,15 +5,49 @@ format: html
 editor: visual
 ---
 
+# What we have so far
+
 ![](photos/Screenshot%202024-10-03%20at%203.26.37%20PM.png){width="393"}
 
-![](photos/Screenshot%202024-10-03%20at%203.44.00%20PM.png){width="459"}
+Here, we manually identified the hexcodes for the stroma, and input them to QuPath so it would recognize the stroma as that shade of light pink.
 
 ![](photos/Screenshot%202024-10-03%20at%203.44.54%20PM.png){width="397"}
 
-![](photos/Screenshot%202024-10-03%20at%203.51.39%20PM.png){width="504"}
+Here, we estimated stain vectors, based on a selected square of the provided image. QuPath automatically creates subplots containing each pixel, showing the relationship for each RGB relationship in each pixel. Along the end, QuPath created stain vectors, and used that to identify melanocytes
+
+![](photos/Screenshot%202024-10-03%20at%203.51.39%20PM.png){width="461"}
+
+Here, we ran QuPath to automatically detect cells, in this case melanocytes.
 
 ![](photos/Screenshot%202024-10-03%20at%204.04.32%20PM.png){width="475"}
+
+Here, the melanocyte can be identified manually, we later coded to identify them automatically, and did so across many images:
+
+## Low-Grade C-MIL using H&E
+
+![](photos/Low Grade H&E.png){width="523"}
+
+## High-Grade C-MIL using H&E
+
+![](photos/High Grade H&E.png){width="551"}
+
+## Benign using H&E
+
+![](photos/Benign H&E.png)
+
+## High-Grade C-MIL - Melan-A
+
+![](photos/High-Grade Melan-A.jpeg){width="482"}
+
+## Low-Grade C-MIL - Melan-A
+
+![](photos/Low-Grade Melan-A.jpeg){width="474"}
+
+## Benign -Melan-A
+
+![](photos/Benign Melan-A.jpeg){width="448"}
+
+Andrew and Emma worked on the code below, as well as some data cleaning that is not included . They went for a preliminary approach using R, while we played with QuPath
 
 ```{r}
 #| eval: false
@@ -58,3 +92,15 @@ output_image[!mask] <- "white"  # Set non-matching pixels to white (or any other
 image_write(output_image, "output_image.jpg")  # Save the output
 print(output_image)  # Display the output image
 ```
+
+# Going forward
+
+We brainstormed a few ideas for next steps:
+
+-   Identify the border of each melanocyte and classify the thickness or presence of it's white outline
+
+-   Identify the concentration of melanocytes in a given area away from the edge of the epithelium.
+
+-   Code the epithelium into quarters and see how many melanocytes have traveled away from the stroma
+
+    -   In better words, the concentration of melanocytes in each quarter.
